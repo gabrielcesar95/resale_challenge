@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+    application:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: resale_challenge_application
+        ports:
+            - "5000:5000"
+        volumes:
+            - ./:/usr/src/app
+        networks:
+            - network
+
+    db:
+        image: mariadb:10.4.12
+        container_name: resale_challenge_db
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: resale_challenge
+            MYSQL_USER: system
+            MYSQL_PASSWORD: R3sale_ch4llenge
+            SERVICE_NAME: mariadb
+            SERVICE_TAGS: dev
+        volumes:
+            - dbdata:/var/lib/mysql
+        networks:
+            - network
+
+#Network
+networks:
+    network:
+        driver: bridge
+
+#Volumes
+volumes:
+    dbdata:
+        driver: local
+
