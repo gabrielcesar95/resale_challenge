@@ -1,0 +1,817 @@
+---
+openapi: 3.0.0
+info:
+  title: Resale Challenge
+  description: API de controle de Imobiliárias e Imóveis
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/gabrielcesar95/resale_challenge/1.0.0
+  description: SwaggerHub API Auto Mocking
+paths:
+  /users:
+    get:
+      summary: Adquire a listagem de usuários
+      parameters:
+      - name: token
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: 5e23b9e51faa0
+      - name: page
+        in: header
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: integer
+        example: 2
+      - name: search
+        in: header
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: Leia
+      responses:
+        "200":
+          description: Usuários encontrados.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: integer
+                    example: 1
+                  page:
+                    type: integer
+                    example: 1
+                  pages:
+                    type: integer
+                    example: 1
+                  users:
+                    type: array
+                    items:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          name:
+                            type: string
+                            example: Leia Organa
+                          email:
+                            type: string
+                            example: leiaorgana@rebelalliance.com
+                          drink_counter:
+                            type: string
+                            description: Total de mLs consumidos no dia atual
+                            example: 1500
+        "400":
+          description: Autenticação inválida
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        example: auth_empty
+                      message:
+                        type: string
+                        example: Por favor informe seu token
+        "401":
+          description: Não autorizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        example: unauthorized
+                      message:
+                        type: string
+                        example: Nenhum usuário encontrado com o token informado
+        "404":
+          description: Não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        example: not_found
+                      message:
+                        type: string
+                        example: Nenhum usuário encontrado
+        "422":
+          description: Erro de validação
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        example: unprocessable_entity
+                      message:
+                        type: string
+                        example: O valor do header page deve ser um número inteiro
+    post:
+      summary: Cadastra um novo usuário
+      parameters:
+      - name: token
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: 5e23b9e51faa0
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - email
+              - name
+              - password
+              properties:
+                name:
+                  type: string
+                  example: Leia Organa
+                email:
+                  type: string
+                  example: leiaorgana@rebelalliance.com
+                password:
+                  type: string
+                  example: chewie123
+        required: true
+      responses:
+        "200":
+          description: Usuário cadastrado com sucesso.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Usuário cadastrado com sucesso.
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: Leia Organa
+                      email:
+                        type: string
+                        example: leiaorgana@rebelalliance.com
+        "400":
+          description: Dados inválidos
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        example: invalid_data
+                      message:
+                        type: string
+                        example: O e-mail informado já está cadastrado
+        "409":
+          description: Erro de validação
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        example: unprocessable_entity
+                      message:
+                        type: string
+                        example: O e-mail informado é inválido
+  /users/{id}:
+    get:
+      summary: Adquire os dados do usuário
+      parameters:
+      - name: token
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: 5e23b9e51faa0
+      - name: id
+        in: path
+        description: ID do usuário
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+        example: 1
+      responses:
+        "200":
+          description: Usuário encontrado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: Leia Organa
+                      email:
+                        type: string
+                        example: leiaorgana@rebelalliance.com
+                      drink_counter:
+                        type: string
+                        description: Total de mLs consumidos no dia atual
+                        example: 1500
+        "400":
+          description: Autenticação inválida
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        example: auth_empty
+                      message:
+                        type: string
+                        example: Por favor informe seu token
+        "401":
+          description: Não autorizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        example: unauthorized
+                      message:
+                        type: string
+                        example: Nenhum usuário encontrado com o token informado
+        "404":
+          description: Não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        example: not_found
+                      message:
+                        type: string
+                        example: Usuário não encontrado
+        "422":
+          description: Erro de validação
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        example: unprocessable_entity
+                      message:
+                        type: string
+                        example: O ID de usuário deve ser um número inteiro
+    put:
+      summary: Altera o usuário
+      parameters:
+      - name: token
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: 5e23b9e51faa0
+      - name: id
+        in: path
+        description: ID do usuário
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+        example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  type: string
+                  example: Leia Skywalker
+                email:
+                  type: string
+                  example: leiaskywalker@rebelalliance.com
+                password:
+                  type: string
+                  example: chewie321
+      responses:
+        "200":
+          description: Usuário alterado com sucesso.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Usuário alterado com sucesso
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: Leia Skywalker
+                      email:
+                        type: string
+                        example: leiaskywalker@rebelalliance.com
+        "400":
+          description: Autenticação inválida
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        example: auth_empty
+                      message:
+                        type: string
+                        example: Por favor informe seu token
+        "401":
+          description: Não autorizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        example: unauthorized
+                      message:
+                        type: string
+                        example: Nenhum usuário encontrado com o token informado
+        "403":
+          description: Não autorizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        example: forbidden
+                      message:
+                        type: string
+                        example: Não é permitido alterar outros usuários
+        "422":
+          description: Erro de validação
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        example: unprocessable_entity
+                      message:
+                        type: string
+                        example: O ID de usuário deve ser um número inteiro
+    delete:
+      summary: Exclui o usuário
+      parameters:
+      - name: token
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: 5e23b9e51faa0
+      - name: id
+        in: path
+        description: ID do usuário
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+        example: 1
+      responses:
+        "200":
+          description: Usuário deletado com sucesso.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Usuário deletado com sucesso
+        "400":
+          description: Autenticação inválida
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        example: auth_empty
+                      message:
+                        type: string
+                        example: Por favor informe seu token
+        "401":
+          description: Não autorizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        example: unauthorized
+                      message:
+                        type: string
+                        example: Nenhum usuário encontrado com o token informado
+        "403":
+          description: Não autorizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        example: forbidden
+                      message:
+                        type: string
+                        example: Não é permitido deletar outros usuários
+        "422":
+          description: Erro de validação
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        example: unprocessable_entity
+                      message:
+                        type: string
+                        example: O ID de usuário deve ser um número inteiro
+  /users/{id}/drink:
+    post:
+      summary: Registra consumo
+      parameters:
+      - name: token
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: 5e23b9e51faa0
+      - name: id
+        in: path
+        description: ID do usuário
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+        example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                drink_ml:
+                  type: integer
+                  example: 200
+      responses:
+        "200":
+          description: Usuário alterado com sucesso.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Consumo de água com sucesso
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: Leia Skywalker
+                      email:
+                        type: string
+                        example: leiaskywalker@rebelalliance.com
+                      drink_counter:
+                        type: integer
+                        description: Total de mLs consumidos no dia atual
+                        example: 600
+                  drink:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 5
+                      user_id:
+                        type: integer
+                        example: 1
+                      ml:
+                        type: integer
+                        example: 150
+        "400":
+          description: Autenticação inválida
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        example: auth_empty
+                      message:
+                        type: string
+                        example: Por favor informe seu token
+        "401":
+          description: Não autorizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        example: unauthorized
+                      message:
+                        type: string
+                        example: Nenhum usuário encontrado com o token informado
+        "422":
+          description: Erro de validação
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        example: unprocessable_entity
+                      message:
+                        type: string
+                        example: Os ml consumidos devem ser um número inteiro
+  /users/{id}/drinks:
+    get:
+      summary: Adquire o histórico de consumo do usuário
+      parameters:
+      - name: token
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: 5e23b9e51faa0
+      - name: page
+        in: header
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: integer
+        example: 2
+      - name: date
+        in: header
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: 2020-01-20
+      - name: id
+        in: path
+        description: ID do usuário
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+        example: 1
+      responses:
+        "200":
+          description: Registros encontrados.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: integer
+                    example: 1
+                  page:
+                    type: integer
+                    example: 1
+                  pages:
+                    type: integer
+                    example: 1
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: Leia Organa
+                      email:
+                        type: string
+                        example: leiaorgana@rebelalliance.com
+                      created_at:
+                        type: string
+                        example: 2020-01-18 15:30:00
+                      updated_at:
+                        type: string
+                        example: 2020-01-18 17:51:18
+                  drinks:
+                    type: array
+                    items:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          ml:
+                            type: integer
+                            example: 150
+                          created_at:
+                            type: string
+                            example: 2020-01-18 15:42:58
+        "400":
+          description: Autenticação inválida
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        example: auth_empty
+                      message:
+                        type: string
+                        example: Por favor informe seu token
+        "401":
+          description: Não autorizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        example: unauthorized
+                      message:
+                        type: string
+                        example: Nenhum usuário encontrado com o token informado
+        "404":
+          description: Não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        example: not_found
+                      message:
+                        type: string
+                        example: Usuário não encontrado
+        "422":
+          description: Erro de validação
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        example: unprocessable_entity
+                      message:
+                        type: string
+                        example: O valor do header page deve ser um número inteiro
