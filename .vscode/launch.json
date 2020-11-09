@@ -16,8 +16,7 @@
             },
             "args": [
                 "run"
-            ],
-            "jinja": true
+            ]
         }
     ]
 }

@@ -1,4 +1,4 @@
-from flask import Blueprint, current_app
+from flask import Blueprint
 
 from app.controllers.RealEstate import index as RealEstateIndex
 from app.controllers.RealEstate import create as RealEstateCreate
