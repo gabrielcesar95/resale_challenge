@@ -1,16 +1,11 @@
-from app import ma
+from marshmallow import Schema, fields
+from marshmallow.validate import *
 
-
-class RealEstateSchema(ma.Schema):
+class RealEstateSchema(Schema):
+    name = fields.Str(required=True, allow_none=False, validate=Length(min=1, max=120))
+    address = fields.Str(validate=Length(max=255))
     class Meta:
         fields = ('id', 'name', 'address')
-
-    _links = ma.Hyperlinks(
-        {
-            'self': ma.URLFor('realestate_detail', values=dict(id='<id>')),
-            'collection': ma.URLFor('realestates')
-        }
-    )
 
 
 realestate_schema = RealEstateSchema()
