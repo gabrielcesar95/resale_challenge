@@ -4,7 +4,6 @@ from app.models.RealEstate import RealEstate
 from app.schemas.RealEstate import RealEstateSchema, realestate_schema, realestates_schema
 
 schema = RealEstateSchema()
-request_data = request.get_json()
 
 def index() -> dict:
     real_estates:list = RealEstate.query.order_by(RealEstate.name).all()
@@ -12,6 +11,8 @@ def index() -> dict:
     return jsonify(realestates_schema.dump(real_estates))
 
 def create() -> dict:
+    request_data = request.get_json()
+
     validate_errors = schema.validate(request_data)
     if(validate_errors):
         abort(400, str(validate_errors))
@@ -36,6 +37,8 @@ def get(id: int) -> dict:
     return jsonify(realestate_schema.dump(real_estate))
 
 def update(id: int) -> dict:
+    request_data = request.get_json()
+
     real_estate = RealEstate.query.filter(
         RealEstate.id == id
     ).first()

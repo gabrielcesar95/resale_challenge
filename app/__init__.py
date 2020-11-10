@@ -11,16 +11,18 @@ def create_app(config_filename=None):
 
     db.init_app(application)
     with application.app_context():
-        # from . import routes  # Import routes
         db.create_all()  # Create sql tables for our data models
 
         return application
 
 def register_blueprints(application):
     from app.controllers import RealEstate_blueprints
+    from app.controllers import Property_blueprints
+
     application.register_blueprint(
         RealEstate_blueprints, url_prefix='/real-estates')
-
+    application.register_blueprint(
+        Property_blueprints, url_prefix='/properties')
 
 config_filename = os.path.abspath(
     os.path.dirname(__file__)) + "/../instance/settings.cfg"
