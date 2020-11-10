@@ -30,6 +30,12 @@ db = SQLAlchemy()
 ma = Marshmallow(app)
 
 
+#TODO: nos casos de erro, parar de renderizar o retorno como HTML
+
 @app.errorhandler(404)
 def resource_not_found(e):
     return jsonify(error=str(e)), 404
+
+@app.errorhandler(400)
+def resource_not_found(e):
+    return jsonify(error=str(e)), 400
