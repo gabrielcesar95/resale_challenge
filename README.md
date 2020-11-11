@@ -26,6 +26,5 @@ ports:
 ```
 
 ### Utilização
-#TODO: Adicionar links  
 [Documentação OpenAPI](https://app.swaggerhub.com/apis/gabrielcesar95/resale_challenge/1.0.0)  
-Workspace no Insomnia
+[Workspace no Insomnia](https://drive.google.com/file/d/15yttZKZAv7jc9vPEFGGeoHon922Qaq-k/view?usp=sharing)

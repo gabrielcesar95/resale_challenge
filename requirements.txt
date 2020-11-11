@@ -1,2 +1,6 @@
 Flask
+PyMySQL
+SQLAlchemy
 Flask-SQLAlchemy
+marshmallow
+flask-marshmallow
