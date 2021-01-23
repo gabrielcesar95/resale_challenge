@@ -1,5 +1,5 @@
 version: '3'
-
+#TODO: fix mariadb user/password issues
 services:
     application:
         build:
@@ -22,8 +22,6 @@ services:
         environment:
             MYSQL_ROOT_PASSWORD: "root"
             MYSQL_DATABASE: "resale_challenge"
-            MYSQL_USER: "system"
-            MYSQL_PASSWORD: "R3sale_ch4llenge"
             SERVICE_NAME: mariadb
             SERVICE_TAGS: dev
         volumes:
