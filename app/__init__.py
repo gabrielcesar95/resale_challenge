@@ -6,6 +6,9 @@ from flask_marshmallow import Marshmallow
 def create_app(config_filename=None):
     application = Flask(__name__, instance_relative_config=True)
     application.config.from_pyfile(config_filename)
+
+    application.register_error_handler(400, bad_request)
+    application.register_error_handler(404, resource_not_found)
     
     register_blueprints(application)
 
@@ -32,12 +35,13 @@ db = SQLAlchemy()
 ma = Marshmallow(app)
 
 
-#TODO: nos casos de erro, parar de renderizar o retorno como HTML
+@app.errorhandler(400)
+def bad_request(e):
+    return_payload = {
+        'errors':e.description
+    }
+    return jsonify(return_payload), 400
 
 @app.errorhandler(404)
 def resource_not_found(e):
     return jsonify(error=str(e)), 404
-
-@app.errorhandler(400)
-def resource_not_found(e):
-    return jsonify(error=str(e)), 400

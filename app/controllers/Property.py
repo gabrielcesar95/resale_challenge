@@ -19,7 +19,7 @@ def create() -> dict:
 
     validate_errors = schema.validate(request_data)
     if(validate_errors):
-        abort(400, str(validate_errors))
+        abort(400, validate_errors)
 
     characteristics = json.dumps(request_data['characteristics'])
 
@@ -47,7 +47,7 @@ def get(id: int) -> dict:
     ).first()
 
     if(property is None):
-        abort(404, "Imóvel não encontrado")
+        abort(404, "Real Estate ID: {}".format(id))
 
     property.characteristics = json.loads(property.characteristics)
 
@@ -61,11 +61,11 @@ def update(id: int) -> dict:
     ).first()
 
     if(property is None):
-        abort(404, "Imóvel não encontrado")
+        abort(404, "Real Estate ID: {}".format(id))
 
     validate_errors = schema.validate(request_data)
     if(validate_errors):
-        abort(400, str(validate_errors))
+        abort(400, validate_errors)
 
     characteristics = json.dumps(request_data['characteristics'])
 
@@ -91,7 +91,7 @@ def delete(id: int) -> dict:
     ).first()
 
     if(property is None):
-        abort(404, "Imóvel não encontrado")
+        abort(404, "Real Estate ID: {}".format(id))
 
     db.session.delete(property)
     db.session.commit()
